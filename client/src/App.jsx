@@ -1,6 +1,7 @@
 import "./App.css";
 import { Routes, Route } from 'react-router-dom';
 import Landing from "./pages/Home/Landing";
+import DraftAndPublished from './components/dashboard/DraftAndPublished'
 
 // Pages
 const landingProps = {
@@ -16,6 +17,7 @@ function App() {
         {/* <Route path="/services" element={<Browse />} /> */}
         {/* <Route path="/contact" element={<ContactUs />} /> */}
         {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="/dashboard" element={<DraftAndPublished/>}></Route>
       </Routes>
     </>
   );
