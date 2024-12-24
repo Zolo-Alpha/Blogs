@@ -20,9 +20,9 @@ const HeroSection = () => {
                 for all things.
               </p>
               <div className="flex justify-start items-center md:w-full">
-                <Link to={"/signup"}>
+                <Link to={"/login"}>
                   <button className="bg-blue-500 text-white max-w-full md:w-28 w-16 p-0.5 h-10 rounded-3xl m-8 hover:bg-[#65558F] ease-out">
-                    Sign Up
+                    Login
                   </button>
                 </Link>
                 <Link to={"/write"}>

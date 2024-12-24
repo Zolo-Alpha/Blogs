@@ -8,7 +8,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import blogs from "../../../data/blogs";
 import { Link } from "react-router-dom";
-export default function Landing({ title }) { {/** remove this title */}
+export default function Landing() { {/** remove this title */}
   return (
     <>
       <Navbar />
