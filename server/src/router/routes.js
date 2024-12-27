@@ -3,6 +3,7 @@ import { userMiddleware } from "../middleware/user.middleware.js";
 import newsRoutes from "../controllers/newsletter.controller.js";
 import blogsRoutes from "../controllers/blog.controller.js";
 import adminRoutes from "../controllers/admin.controller.js";
+import authRoutes from "./auth.js";
 
 function routes(app) {
   app.get("/health", (req, res) => {
@@ -12,6 +13,7 @@ function routes(app) {
   app.use("/newsletter", adminMiddleware, newsRoutes);
   app.use("/blog", userMiddleware, blogsRoutes);
   app.use("/admin", adminMiddleware, adminRoutes);
+  app.use("/auth",authRoutes);
 }
 
 export default routes;

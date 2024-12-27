@@ -48,7 +48,8 @@ router.get(
     console.log("Received request for /google/callback");
     next();
   },
-  passport.authenticate("google", { failureRedirect: "/auth/error" }),
+  passport.authenticate("google", { 
+    failureRedirect: "/auth/error" }),
   (req, res, next) => {
     if (req.authError) {
       console.error("Authentication error", req.authError);

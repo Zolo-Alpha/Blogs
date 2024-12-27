@@ -48,7 +48,8 @@ const UnifiedLoginSignup = ({ onClose }) => {
 	};
 
 	const handleGoogleAuth = () => {
-		window.location.href = "/auth/google"; // Redirect to Google OAuth login
+		// window.location.href = "/auth/google"; // Redirect to Google OAuth login
+		window.location.href = `${apiClient.defaults.baseURL}/auth/google`; // Redirect to Google OAuth login
 	};
 
 	return (
