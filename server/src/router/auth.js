@@ -1,7 +1,7 @@
 import express from "express";
 import passport from "../config/passport.js";
 import jwt from "jsonwebtoken";
-
+// import { handleRegisterUser,handleLoginUser} from "../controllers/auth.controllers.js";
 const router = express.Router();
 
 router.get("/user", (req, res) => {
@@ -70,7 +70,35 @@ router.get(
 
     // Send the JWT token as a response
     res.cookie("token", token);
-    res.redirect("/auth/user");
+    // res.redirect("/auth/user");
+
+    // const responsePayload = {
+    //   message: "Authentication successful",
+    //   token,
+    //   user: {
+    //     name: req.user.name || req.user.gAuth.displayName,
+    //     id: req.user.id,
+    //     email: req.user.email,
+    //     role: req.user.role,
+    //     gAuth: req.user.gAuth, // Include Google Auth profile
+    //   },
+    // };
+
+    // console.log("Response to be sent:", responsePayload); // Log the response payload
+
+    res
+    .status(200)
+    .json({
+      message: "Authentication successful",
+      token,
+      user: {
+        name: req.user.name || req.user.gAuth.displayName,
+        id: req.user.id,
+        email: req.user.email,
+        role: req.user.role,
+        gAuth: req.user.gAuth, // Include Google Auth profile
+      },
+    });
   },
 );
 
