@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function Navbar({ onSearch }) {
+function Navbar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    onSearch(value);
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/search/${searchTerm}`);
+    }
   };
 
   const toggleMenu = () => {
@@ -25,30 +31,29 @@ function Navbar({ onSearch }) {
             alt="Logo"
             className="w-[23px] h-[23px] object-contain"
           />
-          <div className="hidden md:block text-base">Blogs</div>
+          <div className="hidden md:block text-white text-base">Blogs</div>
         </div>
       </div>
 
       <div className="flex items-center justify-between w-full md:w-[80vw]">
         <div className="hidden md:flex gap-8 items-center text-sm md:text-base font-light ml-4">
-          <a href="/#topPics" className="hover:text-stone-300">
+          <a href="/#topPics" className="text-white hover:text-stone-300">
             Top Pics
           </a>
-          <Link to="/about-us" className="hover:text-stone-300">
+          <Link to="/about-us" className="text-white hover:text-stone-300">
             About Us
           </Link>
-          <Link to="/write" className="hover:text-stone-300">
+          <Link to="/write" className="text-white hover:text-stone-300">
             Write
           </Link>
         </div>
 
-        <div className="md:flex items-center ">
-          <div
-            className={`${
-              menuOpen ? "hidden" : "block"
-            } flex items-center justify-between md:w-[20vw]`}
-          >
-            <form className="flex items-center bg-gray-800 rounded-3xl border border-neutral-600 px-4 py-1 w-full">
+        <div className="md:flex items-center">
+          <div className={`flex items-center justify-between md:w-[20vw]`}>
+            <form
+              onSubmit={handleSearchSubmit}
+              className="flex items-center bg-gray-800 rounded-3xl border border-neutral-600 px-4 py-1 w-full"
+            >
               <img
                 loading="lazy"
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/d48ead5f195b654d237698cfceb2eef3f5dd60346e5f886dae2b2fa34baa3e4e?apiKey=cb0dbcd120c84cf4a6cf9d039ebac0a2&"
@@ -83,7 +88,7 @@ function Navbar({ onSearch }) {
       </div>
 
       <button
-        className="text-white ml-10  text-xl  md:hidden z-40"
+        className="text-white ml-10 text-xl md:hidden z-40"
         onClick={toggleMenu}
         aria-label="Toggle Menu"
       >

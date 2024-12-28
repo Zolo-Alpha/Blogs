@@ -70,24 +70,24 @@ router.get(
 
     // Send the JWT token as a response
     res.cookie("token", token);
-    // res.redirect("/auth/user");
-
+    // res.redirect("http://localhost:5173");
+    
     // const responsePayload = {
-    //   message: "Authentication successful",
-    //   token,
-    //   user: {
-    //     name: req.user.name || req.user.gAuth.displayName,
-    //     id: req.user.id,
-    //     email: req.user.email,
-    //     role: req.user.role,
-    //     gAuth: req.user.gAuth, // Include Google Auth profile
-    //   },
-    // };
-
-    // console.log("Response to be sent:", responsePayload); // Log the response payload
-
-    res
-    .status(200)
+      //   message: "Authentication successful",
+      //   token,
+      //   user: {
+        //     name: req.user.name || req.user.gAuth.displayName,
+        //     id: req.user.id,
+        //     email: req.user.email,
+        //     role: req.user.role,
+        //     gAuth: req.user.gAuth, // Include Google Auth profile
+        //   },
+        // };
+        
+        // console.log("Response to be sent:", responsePayload); // Log the response payload
+        
+        res
+        .status(200)
     .json({
       message: "Authentication successful",
       token,

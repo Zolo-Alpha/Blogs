@@ -9,6 +9,8 @@ import NotFound from "./pages/NotFound/NotFound";
 import WriteBlog from "./pages/Write/WriteBlog";
 import Profile from "./pages/Profile/Profile";
 import UnifiedLoginSignup from "./pages/Login/Login";
+import Search from "./pages/SearchResult/Search";
+import HomeLayout from "./layout/HomeLayout";
 
 function App() {
   return (
@@ -18,8 +20,9 @@ function App() {
         <Route path="/login" element={<UnifiedLoginSignup />} />
         <Route path="/write" element={<WriteBlog />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile" element={<Profile />} />
         <Route path="/blog/:id" element={<SingleBlog />} />
+          <Route path="/search/:term" element={<Search />} />
         <Route
           path="/admin"
           element={

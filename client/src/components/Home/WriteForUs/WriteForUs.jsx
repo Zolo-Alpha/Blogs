@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import image from "../../../assets/Saly-38.png"
 const WriteForUs = () => {
   return (
     <>
@@ -25,12 +26,12 @@ const WriteForUs = () => {
           </Link>
         </div>
         <img
-          src="/Saly-38.png"
+          src={image}
           alt="Write for Us"
           className="hidden md:block"
         />
         <img
-          src="/Saly-38.png"
+          src={image}
           alt="Write for Us"
           className=" block h-[250px] w-[200px]  md:hidden"
         />
