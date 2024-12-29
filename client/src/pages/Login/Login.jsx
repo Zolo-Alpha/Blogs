@@ -55,24 +55,7 @@ const UnifiedLoginSignup = ({ onClose }) => {
 			// Step 1: Redirect to the Google OAuth login page
 			window.location.href = `${apiClient.defaults.baseURL}/auth/google`;
 			console.log("Redirecting to Google Auth...");
-	
-			// Step 2: After successful login, handle the callback
-			// This part is executed only after the user is redirected back to your application
-			const response = await apiClient.get("/auth/google/callback", { withCredentials: true });
-	
-			const data = await response.json();
-			if (data.token) {
-				console.log("Authentication successful:", data);
 				
-				// Store the token locally for future API requests
-				localStorage.setItem("authToken", data.token);
-	
-				// Redirect to the target page
-				window.location.href = `http://localhost:5173`;
-			} else {
-				console.error("Authentication failed:", data.message);
-				setError("Failed to handle Google Authentication.");
-			}
 		} catch (err) {
 			console.error("Google Auth Error:", err.message);
 			setError("Failed to handle Google Authentication.");

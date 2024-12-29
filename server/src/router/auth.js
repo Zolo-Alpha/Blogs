@@ -6,7 +6,11 @@ const router = express.Router();
 
 router.get("/user", (req, res) => {
   console.log("Received request for /user");
-  const token = req.headers.cookie?.split("token=")[1]?.split(";")[0];
+  
+  // const token = req.headers.cookie?.split("token=")[1]?.split(";")[0];
+  const token = req.cookies.token;
+  console.log("token is "+ token);
+  
 
   if (!token) {
     console.log("No token found in cookies");
@@ -20,12 +24,18 @@ router.get("/user", (req, res) => {
     const decoded = jwt.verify(token, "your_secret_key_here");
     const { id, name, email, role } = decoded;
     console.log("Token verified successfully", decoded);
-    res.json({ id, name, email, role });
+    res.status(200).json({ 
+      name: decoded.name,
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role,
+      gAuth:decoded.gAuth,
+  });
   } catch (error) {
     console.error("Invalid token", error);
     return res.status(401).json({ message: "Invalid token", error });
   }
-  res.send("Not authenticated");
+  // res.send("Not authenticated");
 });
 
 router.get(
@@ -62,6 +72,7 @@ router.get(
         id: req.user.id,
         email: req.user.email,
         role: req.user.role,
+        gAuth: req.user.gAuth, // Include Google Auth profile
       },
       "your_secret_key_here",
     );
@@ -70,35 +81,7 @@ router.get(
 
     // Send the JWT token as a response
     res.cookie("token", token);
-    // res.redirect("http://localhost:5173");
-    
-    // const responsePayload = {
-      //   message: "Authentication successful",
-      //   token,
-      //   user: {
-        //     name: req.user.name || req.user.gAuth.displayName,
-        //     id: req.user.id,
-        //     email: req.user.email,
-        //     role: req.user.role,
-        //     gAuth: req.user.gAuth, // Include Google Auth profile
-        //   },
-        // };
-        
-        // console.log("Response to be sent:", responsePayload); // Log the response payload
-        
-        res
-        .status(200)
-    .json({
-      message: "Authentication successful",
-      token,
-      user: {
-        name: req.user.name || req.user.gAuth.displayName,
-        id: req.user.id,
-        email: req.user.email,
-        role: req.user.role,
-        gAuth: req.user.gAuth, // Include Google Auth profile
-      },
-    });
+    res.redirect("http://localhost:5173/dashboard");
   },
 );
 
