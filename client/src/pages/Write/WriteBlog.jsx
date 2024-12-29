@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "@mdxeditor/editor/style.css";
 import {
   MDXEditor,
@@ -20,21 +21,29 @@ import {
   ListsToggle,
 } from "@mdxeditor/editor";
 
-import "@mdxeditor/editor/style.css";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar.jsx";
 
 export default function WriteBlog() {
-  // TODO: check of id in useParams. if id found, check the user if user have enough rights then allow the user to edit this blog send update/create request accordingly to the backend server
-
-  // Declare a state to store the value of the editor
+  const navigate = useNavigate(); // Initialize navigation
   const [md, setMd] = useState("Welcome to Techno Blogs");
-
   const ref = useRef(null);
 
-  // Add key up event listener to the editor
-  // This will help us to get the current value of the editor
+  // Check for the token in cookies when the component is mounted
+  useEffect(() => {
+    // Retrieve the token from cookies
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
 
+    // If no token is found, redirect to the login page
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]); // Empty dependency array ensures this runs once when the component mounts
+
+  // Handle editor content change
   const handleChange = () => {
     setMd(ref.current.getMarkdown());
     // console.log(md)
@@ -43,8 +52,8 @@ export default function WriteBlog() {
 
   return (
     <>
-	  <Navbar />
-      {/* TODO: Add A Header (I Dont know Which one) */}
+      <Navbar />
+      {/* TODO: Add A Header (I Don't know Which one) */}
       <div className="h-[80svh]">
         <MDXEditor
           className="bg-white h-full"
