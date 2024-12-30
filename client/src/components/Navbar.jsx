@@ -20,6 +20,17 @@ function Navbar() {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+  const scrollToSection = () => {
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
+    setTimeout(() => {
+      const section = document.getElementById("topPics");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100); // Delay to ensure the DOM is loaded
+  };
 
   return (
     <header className="flex items-center px-5 py-4 w-full border-b border-neutral-500">
@@ -40,9 +51,9 @@ function Navbar() {
 
       <div className="flex items-center justify-between w-full md:w-[80vw]">
         <div className="hidden md:flex gap-8 items-center text-sm md:text-base font-light ml-4">
-          <a href="/#topPics" className="text-white hover:text-stone-300">
+        <button onClick={scrollToSection} className="text-sm text-white hover:text-stone-300 py-1">
             Top Pics
-          </a>
+          </button>
           <Link to="/about-us" className="text-white hover:text-stone-300">
             About Us
           </Link>
