@@ -3,7 +3,7 @@ import { userMiddleware } from "../middleware/user.middleware.js";
 import newsRoutes from "../controllers/newsletter.controller.js";
 import blogsRoutes from "../controllers/blog.controller.js";
 import adminRoutes from "../controllers/admin.controller.js";
-import authRoutes from "../controllers/auth.controllers.js";
+import authRoutes from "../controllers/auth.controller.js";
 
 function routes(app) {
   app.get("/health", (req, res) => {
