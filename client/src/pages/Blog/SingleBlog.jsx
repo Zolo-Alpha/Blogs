@@ -5,8 +5,8 @@ import "./SingleBlog.css";
 import profileImage from "./profile.png";
 import likeIcon from "../../assets/like-icon.png";
 import commentIcon from "../../assets/comment-icon.png";
-import blogs from "../../../data/blogs";
 import { Link } from "react-router-dom";
+import apiClient from "../../helper/apiClient";
 
 export default function SingleBlog({ title }) {
   const { id } = useParams();
@@ -18,14 +18,14 @@ export default function SingleBlog({ title }) {
     const fetchBlog = async () => {
       try {
         console.log("hi");
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/blog/search/${id}`
-        );
+        const response = await apiClient.get(`/blog/${id}`);
         console.log(response);
-        if (!response.ok) {
+        if (!response.status=== 200) {
           throw new Error(`Error fetching blog`);
         }
-        const data = await response.json();
+        const data =  response.data;
+        console.log("Response data is "+ JSON.stringify(data));
+        
         setBlog(data);
       } catch (err) {
         setError(err.message);
@@ -88,7 +88,7 @@ export default function SingleBlog({ title }) {
               <div className="author-details">
                 <p className="author-name">{blog.author}</p>
                 <p className="author-date">
-                  {blog.date.toLocaleDateString("en-US", {
+                  {new Date(blog.date).toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
                   })}
