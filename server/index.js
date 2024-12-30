@@ -30,7 +30,7 @@ const DB = process.env.MONGODB_HOST;
 
 const corsOptions = {
     origin: (origin, callback) => {
-        const allowedOrigins = ['http://localhost:5173', 'http://127.0.0.1'];
+        const allowedOrigins = [process.env.CORS_ORIGIN ,'http://localhost:5173', 'http://127.0.0.1'];
         if (allowedOrigins.includes(origin) || !origin) {
             // Allow no origin (when the request is made by the server itself, for example)
             callback(null, true);
