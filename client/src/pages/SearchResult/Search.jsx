@@ -47,7 +47,7 @@ const Search = () => {
                                 <PostCard
                                     logo={blog.image}  // Assuming 'image' here refers to the blog's logo
                                     image={blog.image}
-                                    author={blog.author?.name || "Unknown"} // Use optional chaining in case 'author' is missing
+                                    author={blog.author?.name || "Anonymous"} // Use optional chaining in case 'author' is missing
                                     category={blog.tags.map(tag => tag.name).join(", ")} // Join all tags if present
                                     title={blog.title}
                                     description={blog.description}
