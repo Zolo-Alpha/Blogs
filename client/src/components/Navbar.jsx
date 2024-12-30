@@ -31,7 +31,10 @@ function Navbar() {
             alt="Logo"
             className="w-[23px] h-[23px] object-contain"
           />
-          <div className="hidden md:block text-white text-base">Blogs</div>
+          {/* <div className="hidden md:block text-white text-base">Blogs</div> */}
+          <Link to="/" className="text-white hover:text-stone-300">
+            Blogs
+          </Link>
         </div>
       </div>
 
