@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
 import HeroSection from "../../components/Home/HeroSection/HeroSection";
 import HomeNav from "../../components/Home/HomeNav/HomeNav";
 import PostCard from "../../components/Home/Card/PostCard";
 import Card from "../../components/Home/Card/CardLatest";
 import WriteForUs from "../../components/Home/WriteForUs/WriteForUs";
-import Footer from "../../components/Footer";
 import apiClient from "../../helper/apiClient";
+import HomeLayout from "../../layout/HomeLayout";
 
 export default function Landing() {
   // State to store the fetched blog data
@@ -28,8 +27,7 @@ export default function Landing() {
   }, []); // Empty dependency array to run this effect only once when the component mounts
 
   return (
-    <>
-      <Navbar />
+    <HomeLayout>
       <div className="flex flex-col justify-center items-center h-full w-full overflow-hidden ">
         <div className="w-[100%] md:mb-[150px]">
           <div
@@ -104,7 +102,6 @@ export default function Landing() {
           <WriteForUs />
         </div>
       </div>
-      <Footer />
-    </>
+    </HomeLayout>
   );
 }

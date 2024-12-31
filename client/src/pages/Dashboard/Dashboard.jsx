@@ -132,7 +132,7 @@ function Dashboard(props) {
                           {activeTab === "Draft" ? "last edited" : "published"}{" "}
                           {new Date(blog.date).toLocaleDateString()}
                         </span>
-                        <Link to="/UpdatePost">
+                        <Link to={`/blog/${blog._id}`} key={blog._id}>
                           <button className="bg-blue-500 cursor-pointer hover:bg-blue-600 w-[70px] sm:w-[87px] h-[27px] text-white ml-4 sm:ml-[80px] rounded-full font-mono">
                             View
                           </button>
