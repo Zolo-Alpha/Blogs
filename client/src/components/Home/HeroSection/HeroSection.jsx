@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import image1 from "../../../assets/Saly-11.png"
+import image2 from "../../../assets/Saly-mobile.png"
 const HeroSection = () => {
   return (
     <>
@@ -34,12 +36,12 @@ const HeroSection = () => {
             </div>
             <div className="flex items-center md:w-[900px] max-h-full mt-28 ">
               <img
-                src="/Saly-11.png"
+                src={image1}
                 alt="Hero Section Image"
                 className="h-[497px] w-[477px] max-w-none hidden md:block "
               />
               <img
-                src="/Saly-mobile.png"
+                src={image2}
                 alt="Hero Section Image"
                 className="max-w-none block md:hidden w-[200px]"
               />

@@ -6,10 +6,14 @@ import cors from "cors";
 import dotenv from "dotenv";
 import routes from "./src/router/routes.js";
 import Blog from "./src/model/blog.js";
+import cookieParser from 'cookie-parser';
+
 
 // Initialize Express app
 const app = express();
 
+// Use cookie-parser middleware
+app.use(cookieParser()); // This will add the cookies to req.cookies
 const blog = new Blog();
 
 // Load environment variables from .env file
@@ -18,12 +22,26 @@ const PORT = process.env.PORT || 3000;
 const DB = process.env.MONGODB_HOST;
 
 // CORS Config
-const corsOptions = {
-    origin: process.env.CORS_ORIGIN || 'http://127.0.0.1', // Specify your allowed frontend origins as an environment variable
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    optionsSuccessStatus: 204 // Some legacy browsers (IE11, various SmartTVs) choke on 204
-};
+// const corsOptions = {
+//     origin: process.env.CORS_ORIGIN || 'http://localhost:5173' || 'http://127.0.0.1' , // Specify your allowed frontend origins as an environment variable
+//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//     optionsSuccessStatus: 204 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+// };
 
+const corsOptions = {
+    origin: (origin, callback) => {
+        const allowedOrigins = [process.env.CORS_ORIGIN ,'http://localhost:5173', 'http://127.0.0.1'];
+        if (allowedOrigins.includes(origin) || !origin) {
+            // Allow no origin (when the request is made by the server itself, for example)
+            callback(null, true);
+        } else {
+            callback(new Error('CORS policy does not allow this origin.'));
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // This is important to allow credentials
+    optionsSuccessStatus: 204, // For legacy browsers
+};
 app.use(session({ secret: 'YOUR_SESSION_SECRET', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());

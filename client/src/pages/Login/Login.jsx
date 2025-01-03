@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import apiClient from "../../helper/apiClient"; // Use the axios instance
 import { useAuth } from "./useAuth"; // Custom hook for authentication state
 import { AiFillCloseCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const UnifiedLoginSignup = ({ onClose }) => {
+	const navigate = useNavigate();
 	const { isLoggedIn, setLoggedIn } = useAuth(); // Using the custom hook
 	const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Signup
 	const [formData, setFormData] = useState({
@@ -47,9 +49,21 @@ const UnifiedLoginSignup = ({ onClose }) => {
 		}
 	};
 
-	const handleGoogleAuth = () => {
-		window.location.href = "/auth/google"; // Redirect to Google OAuth login
+	
+	const handleGoogleAuth = async () => {
+		try {
+			// Step 1: Redirect to the Google OAuth login page
+			window.location.href = `${apiClient.defaults.baseURL}/auth/google`;
+			console.log("Redirecting to Google Auth...");
+				
+		} catch (err) {
+			console.error("Google Auth Error:", err.message);
+			setError("Failed to handle Google Authentication.");
+		}
 	};
+	
+
+	
 
 	return (
 		<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HomeLayout from "../../layout/HomeLayout";
 import "./SingleBlog.css";
-import profileImage from "./profile.png";
-import likeIcon from "../../assets/like-icon.png";
-import commentIcon from "../../assets/comment-icon.png";
-import blogs from "../../../data/blogs";
 import { Link } from "react-router-dom";
+import apiClient from "../../helper/apiClient";
+import { FaComment } from "react-icons/fa";
+import { AiFillLike } from "react-icons/ai";
+import background from "../../assets/Main-background.png"
+import profileimage from "../../assets/Profilelogo.png"
 
 export default function SingleBlog({ title }) {
   const { id } = useParams();
@@ -18,14 +19,14 @@ export default function SingleBlog({ title }) {
     const fetchBlog = async () => {
       try {
         console.log("hi");
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/blog/search/${id}`
-        );
+        const response = await apiClient.get(`/blog/${id}`);
         console.log(response);
-        if (!response.ok) {
+        if (!response.status === 200) {
           throw new Error(`Error fetching blog`);
         }
-        const data = await response.json();
+        const data = response.data;
+        console.log("Response data is " + JSON.stringify(data));
+
         setBlog(data);
       } catch (err) {
         setError(err.message);
@@ -73,85 +74,131 @@ export default function SingleBlog({ title }) {
 
   return (
     <HomeLayout>
-      {/* Main Background */}
       <div className="main-background"></div>
-
       <div className="blog-content-wrapper">
-        {/* Blog Title and Author Details */}
-        <div className="blog-header">
-          <h1 className="blog-title">{blog.title}</h1>
-          <div className="blog-author-info">
-            {/* Profile Image and Name */}
-            <div className="author-profile">
-              <img className="profile-image" src={profileImage} alt="Author" />
+        <div
+          className="bg-cover bg-center bg-no-repeat h-full w-full"
+          style={{
+            backgroundImage: `url(${background})`,
+          }}>
 
-              <div className="author-details">
-                <p className="author-name">{blog.author}</p>
-                <p className="author-date">
-                  {blog.date.toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
+          <div className="blog-header">
+            <h1 className="blog-title">{blog.title}</h1>
+            <div className="blog-author-info">
+              <div className="author-profile">
+                <img className="profile-image" src={blog.image} alt="Author" />
+
+                <div className="author-details">
+                  <p className="author-name">{blog.author?.name || "Anonymous"}</p>
+                  <p className="author-date">
+                    {new Date(blog.date).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Edit Button */}
-            <Link to={`/write/${blog.id}`}>
-              <button className="edit-button">Edit</button>
-            </Link>
+              {/* Edit Button */}
+              <Link to={`/write/${blog.id}`}>
+                <button className="edit-button">Edit</button>
+              </Link>
+            </div>
+            {/* Interaction Section */}
+            <div className="interaction-info">
+              {/* Horizontal line above */}
+              <div className="horizontal-line"></div>
+
+              {/* Likes and Comments */}
+              <div className="likes-comments">
+                <div className="text-[#FFB5B5] flex items-center space-x-2">
+                  {/* <img src="like.png" className="h-4" alt="likes" /> */}
+                  <AiFillLike />
+                  <p>{blog.likes || 0}</p>
+                </div>
+                <div className="text-[#FFB5B5] flex items-center space-x-2">
+                  {/* <img src="comments.png" className="h-4" alt="comments" /> */}
+                  <FaComment />
+
+                  <p>{blog.comments.length}</p>
+                </div>
+              </div>
+
+              {/* Horizontal line below */}
+              <div className="horizontal-line"></div>
+            </div>
           </div>
-          {/* Interaction Section */}
+
+          <div className="blog-image-section">
+            <p className="blog-paragraph">{blog.description}</p>
+          </div>
+
+          {/* TODO: Interaction Section is incomplete, add option to add comments and view comments*/}
           <div className="interaction-info">
-            {/* Horizontal line above */}
-            <div className="horizontal-line"></div>
-
-            {/* Likes and Comments */}
-            <div className="likes-comments">
-              <div className="icon-container">
-                <img src={likeIcon} alt="Like" className="interaction-icon" />
-                <span>{blog.likes}</span>
-              </div>
-              <div className="icon-container">
-                <img
-                  src={commentIcon}
-                  alt="Comments"
-                  className="interaction-icon"
-                />
-                <span>{blog.comments.length}</span>
-              </div>
-            </div>
-
-            {/* Horizontal line below */}
             <div className="horizontal-line"></div>
           </div>
-        </div>
-
-        <div className="blog-image-section">
-          <p className="blog-paragraph">{blog.description}</p>
-        </div>
-
-        {/* TODO: Interaction Section is incomplete, add option to add comments and view comments*/}
-        <div className="interaction-info">
-          <div className="horizontal-line"></div>
 
           {/* Likes and Comments */}
           <div className="likes-comments">
-            <div className="icon-container">
-              <img src={likeIcon} alt="Like" className="interaction-icon" />
-              <span>{blog.likes}</span>
+            <div className="text-[#FFB5B5] flex items-center space-x-2">
+              <AiFillLike />
+              <p>{blog.likes || 0}</p>
             </div>
-            <div className="icon-container">
-              <img
-                src={commentIcon}
-                alt="Comments"
-                className="interaction-icon"
-              />
-              <span>{blog.comments.length}</span>
+            <div className="text-[#FFB5B5] flex items-center space-x-2">
+              <FaComment />
+
+              <p>{blog.comments.length}</p>
             </div>
           </div>
 
+
           <div className="horizontal-line"></div>
+        </div>
+
+
+        {/* Comment Section */}
+        <div className="comments-section">
+          <div className="comments-header">
+            <span>Comments:-</span>
+            <span>{blog.comments.length}</span>
+          </div>
+          <div className="input-section">
+            <img className="profile-image" src={profileimage} alt="Author" />
+            <input
+              type="text"
+              placeholder="Type something"
+              className="comment-input"
+            />
+          </div>
+          <div className="comment">
+            {
+              blog.comments.length > 0 ? (
+                <div className="comment-container">
+                  <img className="profile-image" src={profileimage} alt="Author" />
+                  <div className="comment-details">
+                    <h3 className="username">
+                      {blog.comments?.[0].user.name || "Username"}
+                    </h3>
+                    <p className="comment-text">
+                      {blog.comments?.[0].content}
+                    </p>
+                    <div className="likes-comments">
+                      <div className="text-[#FFB5B5] flex items-center space-x-2">
+                        <AiFillLike />
+                        <p>{blog.likes || 0}</p>
+                      </div>
+                      <div className="text-[#FFB5B5] flex items-center space-x-2">
+                        <FaComment />
+                        <p>{blog.comments.length}</p>
+                      </div>
+                      <button className="reply-link">Reply</button>
+                    </div>
+                  </div>
+                  <button className="options-button">⋮</button>
+                </div>
+              ) : null}
+          </div>
         </div>
       </div>
     </HomeLayout>

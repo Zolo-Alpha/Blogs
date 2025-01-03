@@ -3,26 +3,26 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/SideProfile/SideProfile";
+import apiClient from "../../helper/apiClient";
 
 function Dashboard(props) {
   const [activeTab, setActiveTab] = useState("Draft");
   const [blogs, setBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const user = {
-    // TODO: fetch cookies and get the data from it
-    email: "example@dev.com",
-    name: "usernamed",
-    role: "user",
+  const [user, setUser] = useState({
+    email: "",
+    name: "",
+    role: "",
     newsletterIsSubscribed: false,
     gAuth: {},
-  };
-  // TODO: fetch all the blogs by this user. sort on the basis of draft and published
+  });
 
+  // Handle tab click
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
 
+  // Handle search term input
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
@@ -30,21 +30,40 @@ function Dashboard(props) {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/blog/search"); // TODO: change this
+        const res = await axios.get("http://localhost:3000/blog/search");
         setBlogs(res.data);
       } catch (error) {
         console.error(error);
       }
     };
 
+    const getUser = async () => {
+      try {
+        console.log("in getUser");
+
+        const response = await apiClient.get("/auth/user");
+        console.log("response received " + JSON.stringify(response.data));
+
+        // Update user state with the received data
+        setUser({
+          email: response.data.email || "example@dev.com",
+          name: response.data.name || "usernamed",
+          role: response.data.role || "user",
+          newsletterIsSubscribed: response.data.newsletterIsSubscribed ?? false, // Set to false if not received
+          gAuth: response.data.gAuth || {},
+        });
+      } catch (err) {
+        console.error("Google Auth Error:", err);
+      }
+    };
+
+    getUser();
     fetchBlogs();
   }, []);
 
   const filteredBlogs = blogs
     .filter((blog) =>
-      activeTab === "Draft"
-        ? blog.review !== "approved"
-        : blog.review === "approved"
+      activeTab === "Draft" ? blog.review !== "approved" : blog.review === "approved"
     )
     .filter(
       (blog) =>
@@ -53,20 +72,20 @@ function Dashboard(props) {
     );
 
   return (
-    <div className="min-h-screen  bg-custom-black flex flex-col">
+    <div className="min-h-screen bg-custom-black flex flex-col">
       <Navbar onSearch={handleSearch} />
       <div className="flex flex-1 flex-col sm:flex-row overflow-hidden sm:ml-12 mt-8">
-        <div className="hidden lg:block  mr-[2vw] items-center sm:ml-0 sm:fixed w-[296px] sm:h-[900px] sm:w-[296px] flex-col z-10 mb-4 sm:mb-0">
+        <div className="hidden lg:block mr-[2vw] items-center sm:ml-0 sm:fixed w-[296px] sm:h-[900px] sm:w-[296px] flex-col z-10 mb-4 sm:mb-0">
           <Sidebar user={user} />
         </div>
 
-        <main className="flex-1 overflow-y-auto  ml-[3%] lg:ml-[8%] md:ml-[-10vw] sm:ml-[10vw] absolute items-center sm:left-[25vw] p-4 sm:p-8">
+        <main className="flex-1 overflow-y-auto ml-[3%] lg:ml-[8%] md:ml-[-10vw] sm:ml-[10vw] absolute items-center sm:left-[25vw] p-4 sm:p-8">
           <div className="max-w-4xl mx-auto ">
             <div className="mb-4 sm:mb-8 ">
               <div className="flex justify-between items-center ">
                 <div>
                   <span
-                    className={`cursor-pointer  text-gray-500 text-[16px] sm:text-[20px] font-mono mr-6 sm:mr-20 pb-2 border-b-2 ${
+                    className={`cursor-pointer text-gray-500 text-[16px] sm:text-[20px] font-mono mr-6 sm:mr-20 pb-2 border-b-2 ${
                       activeTab === "Draft"
                         ? "border-pink-500 text-white"
                         : "border-transparent text-gray-700"
@@ -113,7 +132,7 @@ function Dashboard(props) {
                           {activeTab === "Draft" ? "last edited" : "published"}{" "}
                           {new Date(blog.date).toLocaleDateString()}
                         </span>
-                        <Link to="/UpdatePost">
+                        <Link to={`/blog/${blog._id}`} key={blog._id}>
                           <button className="bg-blue-500 cursor-pointer hover:bg-blue-600 w-[70px] sm:w-[87px] h-[27px] text-white ml-4 sm:ml-[80px] rounded-full font-mono">
                             View
                           </button>

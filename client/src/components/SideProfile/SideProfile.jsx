@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({user}) => {
+  console.log(user?.gAuth);
+  const userPhoto = user.gAuth.photos?.[0]?.value || 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd0e2c4ace1e4f0b9d4328caab53c4ccd055a1af18626f7864523aa76e0978e2?apiKey=cb0dbcd120c84cf4a6cf9d039ebac0a2&';
   return (
     <aside className="flex flex-col sm:h-[700px] w-[296px] max-md:ml-0 max-md:w-full overflow-y-auto">
       <div className="flex overflow-hidden flex-col grow pb-7 w-full text-lg bg-gray-900 rounded-xl border-2 border-solid border-black border-opacity-20 text-zinc-50 max-md:mt-10">
@@ -9,7 +11,7 @@ const Sidebar = ({user}) => {
         <div className="flex flex-col items-center px-11 mt-6 w-full max-md:px-5">
           <img
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/cd0e2c4ace1e4f0b9d4328caab53c4ccd055a1af18626f7864523aa76e0978e2?apiKey=cb0dbcd120c84cf4a6cf9d039ebac0a2&"
+            src={userPhoto}
             alt="User profile"
             className="object-contain bg-blend-normal aspect-[0.98] rounded-[50px] w-[90px] max-md:w-[70px]"
           />
